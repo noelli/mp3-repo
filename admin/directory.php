@@ -61,5 +61,5 @@ if ($hint=="") {
     echo("</tbody>
 </table>");
 }
-echo("<p>Generiert: ".date("d.m.Y H:i:s", filemtime($xmlfile)."</p>"));
+echo("<p>Generated: ".date("d.m.Y H:i:s", filemtime($xmlfile)."</p>"));
 ?>
