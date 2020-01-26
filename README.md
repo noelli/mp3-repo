@@ -7,3 +7,8 @@ Implementing a Search over all of the configured Tags.
  - [ ] allow the mass-updating of entries with i.e. excel lists with corresponding fields.
 - [ ] Missing ID3 Tags:
   - [ ] comment
+
+## Installation:
+  * clone this repo into your WWW-Root
+  * Place ID3-Parser inside ./src/ID3Parser/
+  * configure your MP3 folder inside ./src/indexer.php
