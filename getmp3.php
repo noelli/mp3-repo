@@ -19,7 +19,7 @@ $mp3list=$xmlDoc->getElementsByTagName('item');
 $s=$_GET["s"];
 
 if ($s == "all") {
-    $results = $db->query("SELECT * from $mp3_table ORDER BY date DESC");
+    $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC");
     $hint="";
     while ($row = $results->fetchArray()) { //for($i=0; $i<($mp3list->length); $i++) {
         $date       = DateTime::createFromFormat('Ymd', $row['file_date'])->format('d.m.Y');    //$mp3list->item($i)->getElementsByTagName('album')->item(0);
@@ -35,7 +35,7 @@ if ($s == "all") {
     }
 } else if ($s == "search") {
     $q=$_GET["q"]; //
-    $results = $db->query("SELECT * from $mp3_table ORDER BY date DESC");
+    $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC");
     $hint="";
     while ($row = $results->fetchArray()) { //for($i=0; $i<($mp3list->length); $i++) {
         $date       = $row['file_date'] ;// DateTime::createFromFormat('Y-m-d', $row['date'])->format('F j, Y');    //$mp3list->item($i)->getElementsByTagName('album')->item(0);

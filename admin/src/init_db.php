@@ -6,7 +6,7 @@ $ignore_table= "ignored";
 
 $db->exec( "CREATE TABLE IF NOT EXISTS $mp3_table(
     file_name TEXT PRIMARY KEY,
-    file_tag TEXT,
+    file_date TEXT,
     artist TEXT,
     title TEXT)");
 

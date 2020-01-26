@@ -19,12 +19,12 @@ $mp3list=$xmlDoc->getElementsByTagName('item');
 $mp3_result = [];
 $query = $db->query("SELECT file_name from $mp3_table");
 while ($row = $query->fetchArray()){
-    array_push($mp3_result, $row['file']);
+    array_push($mp3_result, $row['file_name']);
 }
 $ignore_result = [];
 $query = $db->query("SELECT file_name from $ignore_table");
 while ($row = $query->fetchArray()){
-    array_push($ignore_result, $row['file']);
+    array_push($ignore_result, $row['file_name']);
 }
 $hint="";
 for($i=0; $i<($mp3list->length); $i++) {
