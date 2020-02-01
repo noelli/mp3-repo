@@ -1,6 +1,6 @@
 <?php
-    $wwwroot = '/var/www';                  //ToDo: Configure for your www-root
-    $path = ''; // $wwwroot.'/public/mp3/'; //ToDo: Configure to your mp3-location
+    $wwwroot = __DIR__;                  //ToDo: Configure for your www-root
+    $path = $wwwroot.'/public/mp3/'; //ToDo: Configure to your mp3-location
     $xmlpath = $wwwroot.'/public/mp3.xml';  //ToDo: Configure for your output-xml
 
     require_once __DIR__ . '/vendor/autoload.php';

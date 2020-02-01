@@ -11,7 +11,7 @@ Implementing a Search over all of the configured Tags.
 
 ## Installation:
   * clone this repo into your WWW-Root: `git clone https://github.com/noelli/mp3-repo.git`
-  * update permissions so that your webserver can create the index and db files: `chown -R www-data mp3-repo`
+  * update permissions so that your webserver can create the index and db files: `sudo chown -R www-data mp3-repo`
   * go into the mp3-repo folder: `cd mp3-repo`
   * get the required libraries with composer: `composer install`
   * configure your folders inside ./indexer.php: `vim indexer.php`
