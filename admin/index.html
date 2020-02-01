@@ -76,5 +76,14 @@
           </div>
         </form>
     </div>
+    <div class="container">
+      <form action="import_spreadsheet.php" method="post" name="Import" id="Import" enctype="multipart/form-data">
+        <div>
+          <label>Choose Spreadsheet File</label>
+          <input type="file" name="file" id="file" accept=".xls,.xlsx">
+          <button type="submit" id="submit" name="import" class="btn-submit">Import</button>
+        </div>
+      </form> 
+    </div>
 </body>
 </html>
