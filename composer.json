@@ -1,0 +1,6 @@
+{
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.10",
+        "christophwurst/id3parser": "^0.1.1"
+    }
+}

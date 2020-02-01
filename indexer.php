@@ -1,16 +1,18 @@
 <?php
-    $wwwroot = '/var/www';
-    $path = ''; // $wwwroot.'/public/mp3/';
-    $xmlpath = $wwwroot.'/public/mp3.xml';
+    $wwwroot = '/var/www';                  //ToDo: Configure for your www-root
+    $path = ''; // $wwwroot.'/public/mp3/'; //ToDo: Configure to your mp3-location
+    $xmlpath = $wwwroot.'/public/mp3.xml';  //ToDo: Configure for your output-xml
 
-    require_once __DIR__ . '/ID3Parser/getID3/getid3.php';
-    require_once __DIR__ . '/ID3Parser/getID3/getid3_exception.php';
-    require_once __DIR__ . '/ID3Parser/getID3/getid3_handler.php';
-    require_once __DIR__ . '/ID3Parser/getID3/getid3_lib.php';
-    require_once __DIR__ . '/ID3Parser/getID3/Tags/getid3_id3v1.php';
-    require_once __DIR__ . '/ID3Parser/getID3/Tags/getid3_id3v2.php';
-    require_once __DIR__ . '/ID3Parser/ID3Parser.php';
+    // require_once __DIR__ . '/ID3Parser/getID3/getid3.php';
+    // require_once __DIR__ . '/ID3Parser/getID3/getid3_exception.php';
+    // require_once __DIR__ . '/ID3Parser/getID3/getid3_handler.php';
+    // require_once __DIR__ . '/ID3Parser/getID3/getid3_lib.php';
+    // require_once __DIR__ . '/ID3Parser/getID3/Tags/getid3_id3v1.php';
+    // require_once __DIR__ . '/ID3Parser/getID3/Tags/getid3_id3v2.php';
+    // require_once __DIR__ . '/ID3Parser/ID3Parser.php';
+    require_once __DIR__ . '/vendor/autoload.php';
 
+    //
 
     // function definition to convert array to xml
     function array_to_xml( $data, &$xml_data ) {
@@ -46,19 +48,14 @@
         $analyzer = new \ID3Parser\ID3Parser();
         $output = $analyzer->analyze($path."/".$file);
         file_put_contents(__DIR__ ."/error.log", print_r($output, TRUE), FILE_APPEND);
-        // date im Albums-Tag
-        //if ($output["id3v2"]["comments"]["album"]){
-        //    $mp3_tags["album"] = $output["id3v2"]["comments"]["album"][0];
-        //} else {
+
             $mp3_tags["album"] = substr($file, 6, 2).".".substr($file, 4, 2).".".substr($file, 0, 4);
-        //}
-        // artist im artist-Tag
+
         if ($output["id3v2"]["comments"]["artist"]){
             $mp3_tags["artist"] = $output["id3v2"]["comments"]["artist"][0];
         } else {
             $mp3_tags["artist"] = substr($file, 11, -4);
         }
-        // Stelle und evtl. Thema im title-Tag
         if ($output["id3v2"]["comments"]["title"]){
             $mp3_tags["title"] = $output["id3v2"]["comments"]["title"][0];
         } else {

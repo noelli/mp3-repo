@@ -12,7 +12,7 @@ $xmlDoc=new DOMDocument();
 $now   = time();
 $xmlfile = "../public/mp3.xml";
 if ($now - filemtime($xmlfile) >= 60 * 1 || s == "update") { // if the index is older than 1 minute or the button got pressed, update the index.
-    require  __DIR__ . '/../src/indexer.php';
+    require  __DIR__ . '/../indexer.php';
 }
 $xmlDoc->load($xmlfile);
 

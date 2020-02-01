@@ -12,5 +12,4 @@ $db->exec( "CREATE TABLE IF NOT EXISTS $mp3_table(
 
 $db->exec( "CREATE TABLE IF NOT EXISTS $ignore_table(
     file_name TEXT PRIMARY KEY)");
-
 ?>
