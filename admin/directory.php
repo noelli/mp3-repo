@@ -6,10 +6,12 @@ $ignore_table= "ignored";
 
 require_once __DIR__ . '/src/init_db.php';
 
+$s=$_GET["s"];
+
 $xmlDoc=new DOMDocument();
 $now   = time();
 $xmlfile = "../public/mp3.xml";
-if ($now - filemtime($xmlfile) >= 60 * 5 ) { //5 Minutes
+if ($now - filemtime($xmlfile) >= 60 * 1 || s == "update") { // if the index is older than 1 minute or the button got pressed, update the index.
     require  __DIR__ . '/../src/indexer.php';
 }
 $xmlDoc->load($xmlfile);
@@ -48,12 +50,12 @@ for($i=0; $i<($mp3list->length); $i++) {
 // or to the correct values
 // Response
 if ($hint=="") {
-    echo("No new Files");
+    echo("No new Files");       // ToDo: Tanslate
 } else {
     echo('<table class="u-full-width">
     <thead>
         <tr>
-            <th>#</th><th>filename</th><th>date</th><th>artist</th><th>title / Text</th>
+            <th>#</th><th>filename</th><th>date</th><th>artist</th><th>title / Text</th> // ToDo: Tanslate
         </tr>
     </thead>
     <tbody>');
@@ -61,5 +63,5 @@ if ($hint=="") {
     echo("</tbody>
 </table>");
 }
-echo("<p>Generated: ".date("d.m.Y H:i:s", filemtime($xmlfile)."</p>"));
+echo("<p>Generated: ".date("d.m.Y H:i:s", filemtime($xmlfile)."</p>")); // ToDo: Tanslate
 ?>

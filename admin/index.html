@@ -42,7 +42,11 @@
                 document.getElementById("livesearch").innerHTML=this.responseText;
                 }
             }
-            xmlhttp.open("GET","directory.php?s=all", true);
+            if (str == "update") {
+              xmlhttp.open("GET","directory.php?s=update", true);
+            } else {
+              xmlhttp.open("GET","directory.php?s=all", true);
+            }
             xmlhttp.send();
         }
         function check_all(name, el) {
@@ -57,6 +61,7 @@
     <!-- Primary Page Layout
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <div class="container">
+      <button onclick="showResult('update')">Update List</button>
         <form action="database.php" method="POST">
           <div class="row">
               <h1>MP3-Verzeichnis neu Scannen</h1>
