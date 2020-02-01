@@ -55,10 +55,10 @@ if ($hint=="") {
     echo('<table class="u-full-width">
     <thead>
         <tr>
-            <th>#</th><th>filename</th><th>date</th><th>artist</th><th>title / Text</th> // ToDo: Tanslate
+            <th>#</th><th>filename</th><th>date</th><th>artist</th><th>title / Text</th> 
         </tr>
     </thead>
-    <tbody>');
+    <tbody>'); // ToDo: Tanslate
     echo($hint);
     echo("</tbody>
 </table>");

@@ -3,16 +3,7 @@
     $path = ''; // $wwwroot.'/public/mp3/'; //ToDo: Configure to your mp3-location
     $xmlpath = $wwwroot.'/public/mp3.xml';  //ToDo: Configure for your output-xml
 
-    // require_once __DIR__ . '/ID3Parser/getID3/getid3.php';
-    // require_once __DIR__ . '/ID3Parser/getID3/getid3_exception.php';
-    // require_once __DIR__ . '/ID3Parser/getID3/getid3_handler.php';
-    // require_once __DIR__ . '/ID3Parser/getID3/getid3_lib.php';
-    // require_once __DIR__ . '/ID3Parser/getID3/Tags/getid3_id3v1.php';
-    // require_once __DIR__ . '/ID3Parser/getID3/Tags/getid3_id3v2.php';
-    // require_once __DIR__ . '/ID3Parser/ID3Parser.php';
     require_once __DIR__ . '/vendor/autoload.php';
-
-    //
 
     // function definition to convert array to xml
     function array_to_xml( $data, &$xml_data ) {

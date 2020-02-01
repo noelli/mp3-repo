@@ -61,7 +61,6 @@
     <!-- Primary Page Layout
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <div class="container">
-      <button onclick="showResult('update')">Update List</button>
         <form action="database.php" method="POST">
           <div class="row">
               <h1>MP3-Verzeichnis neu Scannen</h1>
@@ -71,6 +70,7 @@
             <label for="ignore"><input type="radio" name="action" value="ignore" id="ignore"> Ignorieren</label>
             <label for="add"><input type="radio" name="action" value="add" id="add"> Hinzufügen</label>
             <button id="submit" type="submit">Senden</button>
+            <button onclick="showResult('update')">Update List</button>
           </div>
           <div class="row" id="livesearch">
           </div>
