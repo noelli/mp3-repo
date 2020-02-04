@@ -23,7 +23,7 @@ if ($s == "all") {
                         "</tr>";
     }
 } else if ($s == "search") {
-    $q=$_GET["q"]; //
+    $q=$_GET["q"];
     $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC");
     $hint="";
     while ($row = $results->fetchArray()) { 
