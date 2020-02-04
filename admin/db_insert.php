@@ -1,8 +1,4 @@
 <?php
-$dbfile = "getmp3.db";
-$db = new SQLite3($dbfile);
-$mp3_table = "MP3";
-$ignore_table= "ignored";
 
 require_once __DIR__ . '/src/init_db.php';
 

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>MP3-Repo</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="../public/fonts/Raleway.css" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="../public/css/normalize.css">
+  <link rel="stylesheet" href="../public/css/skeleton.css">
+
+  <!-- Our project just needs Font Awesome Solid + Brands -->
+  <link href="../public/css/fontawesome.css" rel="stylesheet">
+  <link href="../public/css/brands.css" rel="stylesheet">
+  <link href="../public/css/solid.css" rel="stylesheet">
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="../public/images/favicon.png">
+  <script>
+        function showResult(str) {
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp=new XMLHttpRequest();
+            } else {  // code for IE6, IE5
+                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange=function() {
+                if (this.readyState==4 && this.status==200) {
+                document.getElementById("liveupdate").innerHTML=this.responseText;
+                }
+            }
+            if (str == "matched") {
+              var query = "";
+              [].forEach.call(document.querySelectorAll('select :checked'), function(elm){
+                query = query + elm.value;
+              })
+              xmlhttp.open("GET","db_update.php?phase=matched&query=" + query, true);
+            } else {
+              xmlhttp.open("GET","db_update.php?phase=match", true);
+            }
+            xmlhttp.send();
+        }
+        function check_all(name, el) {
+          var box = el.form.elements[name];
+          if (!box.length) box.checked = el.checked; else 
+            for (var i = 0; i < box.length; i++)
+              box[i].checked = el.checked;
+          }
+    </script>
+</head>
+<body onload="showResult('')">
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+          <div class="row">
+              <h1>MP3-Verzeichnis neu Scannen</h1>
+          </div>
+
+          <div class="row" id="liveupdate">
+          </div>
+    </div>
+</body>
+</html>
