@@ -1,5 +1,8 @@
+[![Skeleton](https://img.shields.io/badge/Made%20with-Skeleton-1f425f.svg)](https://github.com/dhg/Skeleton/)
+
+
 # mp3-repo
-A php-based Webfront to index MP3 Files based on der ID3 Tags.
+A php-backed Webfront to index MP3 Files based on der ID3 Tags.
 Implementing a Search over all of the configured Tags.
 
 ## ToDo:
@@ -15,3 +18,6 @@ Implementing a Search over all of the configured Tags.
   * go into the mp3-repo folder: `cd mp3-repo`
   * get the required libraries with composer: `composer install`
   * configure your folders inside ./indexer.php: `vim indexer.php`
+
+## License
+Free for use under the Open-Source [MIT License](https://github.com/noelli/mp3-repo/blob/master/LICENSE)
