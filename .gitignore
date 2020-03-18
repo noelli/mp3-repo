@@ -3,3 +3,4 @@
 *.db
 /vendor/*
 *.xml
+.DS_Store

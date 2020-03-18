@@ -49,6 +49,8 @@ for($i=0; $i<($mp3list->length); $i++) {
 // Set output to "no suggestion" if no hint was found
 // or to the correct values
 // Response
+echo("<p>Generated: ".date("d.m.Y H:i:s", filemtime($xmlfile)."</p>")); // ToDo: Tanslate
+
 if ($hint=="") {
     echo("No new Files");       // ToDo: Tanslate
 } else {
@@ -63,5 +65,4 @@ if ($hint=="") {
     echo("</tbody>
 </table>");
 }
-echo("<p>Generated: ".date("d.m.Y H:i:s", filemtime($xmlfile)."</p>")); // ToDo: Tanslate
 ?>
