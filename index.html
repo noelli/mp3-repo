@@ -30,7 +30,9 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="public/images/favicon.png">
   <script>
-        function showResult(str) {
+        function showResult() {
+            var entries = document.getElementById("entries").value;
+            var searchterm = document.getElementById("search").value;
             if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp=new XMLHttpRequest();
@@ -42,10 +44,10 @@
                 document.getElementById("livesearch").innerHTML=this.responseText;
                 }
             }
-            if (str.length==0) {
-                xmlhttp.open("GET","getmp3.php?s=all", true);
+            if (searchterm.length==0) {
+                xmlhttp.open("GET","getmp3.php?s=all&entries="+entries, true);
             } else {
-                xmlhttp.open("GET","getmp3.php?s=search&q="+str,true);
+                xmlhttp.open("GET","getmp3.php?s=search&q="+searchterm+"&entries="+entries,true);
             }
             xmlhttp.send();
         }
@@ -61,10 +63,19 @@
         <div class="row">
             <form>
                 <label for="search">Search:</label>
-                <input id="search" class="u-full-width" type="text" size="30" onkeyup="showResult(this.value)" placeholder="Search">
+                <input id="search" class="u-full-width" type="text" size="30" onkeyup="showResult()" placeholder="Search">
             </form>
         </div>
+
         <div class="row" id="livesearch">
+        </div>
+        <div class="row" >
+            <label for="entries">Einträge Anzeigen:</label>
+            <select id="entries" onchange="showResult()">
+            <option value="10" selected>10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            </select>
         </div>
     </div>
 </body>

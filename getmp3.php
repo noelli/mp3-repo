@@ -6,9 +6,13 @@ setlocale(LC_TIME, "de_DE");
 
 //get the s parameter from URL
 $s=$_GET["s"];
+$limit=10;
+
+if ($_GET["entries"] == "25" ) { $limit = 25; }
+if ($_GET["entries"] == "50" ) { $limit = 50; }
 
 if ($s == "all") {
-    $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC");
+    $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC LIMIT $limit");
     $hint="";
     while ($row = $results->fetchArray()) {
         $date       = DateTime::createFromFormat('Ymd', $row['file_date'])->format('d.m.Y');
@@ -24,7 +28,7 @@ if ($s == "all") {
     }
 } else if ($s == "search") {
     $q=$_GET["q"];
-    $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC");
+    $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC LIMIT $limit");
     $hint="";
     while ($row = $results->fetchArray()) { 
         $date       = $row['file_date'] ;
