@@ -4,15 +4,51 @@ $db = new SQLite3($dbfile);
 $mp3_table = "MP3";
 setlocale(LC_TIME, "de_DE");
 
-//get the s parameter from URL
+// get the search parameter from URL
 $s=$_GET["s"];
-$limit=10;
 
+// get the number of entries to display from URL
+$limit=10;
 if ($_GET["entries"] == "25" ) { $limit = 25; }
 if ($_GET["entries"] == "50" ) { $limit = 50; }
 
+if (isset($_GET["page"])) {
+    $pageno = $_GET['page'];
+    if ($pageno > 1) {
+        $limit_start = ($pageno-1) * $limit;
+        $limit_end = $limit_start + $limit;
+    } else {
+        $pageno = 1;
+        $limit_start = 0;
+        $limit_end = $limit;
+    }
+} else {
+    $pageno = 1;
+    $limit_start = 0;
+    $limit_end = $limit;
+}
+$pagination = "";
+
+$results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC LIMIT $limit_start, $limit_end");
+$result_number = $db->querySingle("SELECT count(*) from $mp3_table");
+echo($result_number);
+$number_of_pages = ceil($result_number / $limit);
+if ($number_of_pages > 1){
+    if ($pageno > 1) {
+        $pagination = $pagination . '<a onclick="paginate(1)">&laquo;</a>';
+        $pagination = $pagination . '<a onclick="paginate(' . ($pageno - 1) . ')">' . ($pageno - 1) . '</a>';
+    }
+    $pagination = $pagination . '<a class="active">'. $pageno .'</a>';
+    if ($pageno < $number_of_pages) {
+        $pagination = $pagination . '<a onclick="paginate(' . ($pageno + 1) . ')">' . ($pageno + 1) . '</a>';
+        $pagination = $pagination . '<a onclick="paginate(' . $number_of_pages . ')">&raquo;</a>';
+    }
+}
+
+
+
+// get results if nothing was searched yet
 if ($s == "all") {
-    $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC LIMIT $limit");
     $hint="";
     while ($row = $results->fetchArray()) {
         $date       = DateTime::createFromFormat('Ymd', $row['file_date'])->format('d.m.Y');
@@ -26,9 +62,9 @@ if ($s == "all") {
                             "<td>".$title."</td>".
                         "</tr>";
     }
+    // get results of search term
 } else if ($s == "search") {
     $q=$_GET["q"];
-    $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC LIMIT $limit");
     $hint="";
     while ($row = $results->fetchArray()) { 
         $date       = $row['file_date'] ;
@@ -43,17 +79,18 @@ if ($s == "all") {
                                 "<td>".$title."</td>".
                             "</tr>";
         }
-        
     }
+    // ToDo: Implement filters for certain timespans etc.
 } else if ($s = "filter") {
-    $hint = "not implemented yet!"; //ToDo: Translate
+    $hint = "error"; //ToDo: Translate
+// Error?
 } else {
-    $hint = "Something messed up!"; //ToDo: Translate
+    $hint = "error"; //ToDo: Translate
 }
 
 
-if ($hint=="") {
-    echo("No new Files");
+if ($hint=="error") {
+    echo("Something messed up!");
 } else {
     echo('<table class="u-full-width">
     <thead>
@@ -63,7 +100,12 @@ if ($hint=="") {
     </thead>
     <tbody>');
     echo($hint);
-    echo("</tbody>
-</table>");
+    echo('</tbody>
+</table>
+<div class="row">
+    <div class="pagination">');
+    echo($pagination);
+    echo('</div>
+</div>');
 }
 ?>

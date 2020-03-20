@@ -26,32 +26,60 @@
   <link href="public/css/fontawesome.css" rel="stylesheet">
   <link href="public/css/brands.css" rel="stylesheet">
   <link href="public/css/solid.css" rel="stylesheet">
+
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="public/images/favicon.png">
+
+  <!-- Script for entries
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script>
-        function showResult() {
-            var entries = document.getElementById("entries").value;
-            var searchterm = document.getElementById("search").value;
-            if (window.XMLHttpRequest) {
-                // code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp=new XMLHttpRequest();
-            } else {  // code for IE6, IE5
-                xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange=function() {
-                if (this.readyState==4 && this.status==200) {
-                document.getElementById("livesearch").innerHTML=this.responseText;
-                }
-            }
-            if (searchterm.length==0) {
-                xmlhttp.open("GET","getmp3.php?s=all&entries="+entries, true);
-            } else {
-                xmlhttp.open("GET","getmp3.php?s=search&q="+searchterm+"&entries="+entries,true);
-            }
-            xmlhttp.send();
+      var page = 1;
+
+      function paginate(pageno) {
+        this.page = pageno;
+        showResult();
+      }
+    
+    function showResult() {
+        var entries = document.getElementById("entries").value;
+        var searchterm = document.getElementById("search").value;
+
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        } else {  // code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
         }
+        xmlhttp.onreadystatechange=function() {
+            if (this.readyState==4 && this.status==200) {
+            document.getElementById("livesearch").innerHTML=this.responseText;
+            }
+        }
+        if (searchterm.length==0) {
+            xmlhttp.open("GET","getmp3.php?s=all&entries="+entries+"&page="+page, true);
+        } else {
+            xmlhttp.open("GET","getmp3.php?s=search&q="+searchterm+"&entries="+entries+"&page="+page,true);
+        }
+        xmlhttp.send();
+    }
     </script>
+    <style>
+        .pagination a {
+          color: black;
+          float: left;
+          padding: 8px 16px;
+          text-decoration: none;
+          transition: background-color .3s;
+        }
+        
+        .pagination a.active {
+          background-color: dodgerblue;
+          color: white;
+        }
+        
+        .pagination a:hover:not(.active) {background-color: #ddd;}
+    </style>
 </head>
 <body onload="showResult('')">
     <!-- Primary Page Layout
@@ -60,15 +88,20 @@
         <div class="row">
             <h1>MP3 Repo</h1>
         </div>
+    <!-- Search Form
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
         <div class="row">
             <form>
                 <label for="search">Search:</label>
                 <input id="search" class="u-full-width" type="text" size="30" onkeyup="showResult()" placeholder="Search">
             </form>
         </div>
-
+    <!-- Search results
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
         <div class="row" id="livesearch">
         </div>
+    <!-- Select how many entries
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
         <div class="row" >
             <label for="entries">Einträge Anzeigen:</label>
             <select id="entries" onchange="showResult()">
