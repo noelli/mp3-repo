@@ -64,22 +64,7 @@
         xmlhttp.send();
     }
     </script>
-    <style>
-        .pagination a {
-          color: black;
-          float: left;
-          padding: 8px 16px;
-          text-decoration: none;
-          transition: background-color .3s;
-        }
-        
-        .pagination a.active {
-          background-color: dodgerblue;
-          color: white;
-        }
-        
-        .pagination a:hover:not(.active) {background-color: #ddd;}
-    </style>
+
 </head>
 <body onload="showResult('')">
     <!-- Primary Page Layout
@@ -88,28 +73,28 @@
         <div class="row">
             <h1>MP3 Repo</h1>
         </div>
-    <!-- Search Form
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <!-- Search Form
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
         <div class="row">
-            <form>
-                <label for="search">Search:</label>
-                <input id="search" class="u-full-width" type="text" size="30" onkeyup="showResult()" placeholder="Search">
-            </form>
+            <div class="ten columns">
+                <form>
+                    <label for="search">Search:</label>
+                    <input id="search" class="u-full-width" type="text" size="30" onkeyup="showResult()" placeholder="Search">
+                </form>
+            </div>
+            <div class="two columns">
+                <label for="entries">Einträge:</label>
+                <select id="entries" onchange="showResult()">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
         </div>
+    </div>
     <!-- Search results
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-        <div class="row" id="livesearch">
-        </div>
-    <!-- Select how many entries
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-        <div class="row" >
-            <label for="entries">Einträge Anzeigen:</label>
-            <select id="entries" onchange="showResult()">
-            <option value="10" selected>10</option>
-            <option value="25">25</option>
-            <option value="50">50</option>
-            </select>
-        </div>
+    <div class="container" id="livesearch">
     </div>
 </body>
 </html>

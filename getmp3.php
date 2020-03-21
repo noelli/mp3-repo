@@ -27,26 +27,9 @@ if (isset($_GET["page"])) {
     $limit_start = 0;
     $limit_end = $limit;
 }
-$pagination = "";
 
 $results = $db->query("SELECT * from $mp3_table ORDER BY file_date DESC LIMIT $limit_start, $limit_end");
 $result_number = $db->querySingle("SELECT count(*) from $mp3_table");
-echo($result_number);
-$number_of_pages = ceil($result_number / $limit);
-if ($number_of_pages > 1){
-    if ($pageno > 1) {
-        $pagination = $pagination . '<a onclick="paginate(1)">&laquo;</a>';
-        $pagination = $pagination . '<a onclick="paginate(' . ($pageno - 1) . ')">' . ($pageno - 1) . '</a>';
-    }
-    $pagination = $pagination . '<a class="active">'. $pageno .'</a>';
-    if ($pageno < $number_of_pages) {
-        $pagination = $pagination . '<a onclick="paginate(' . ($pageno + 1) . ')">' . ($pageno + 1) . '</a>';
-        $pagination = $pagination . '<a onclick="paginate(' . $number_of_pages . ')">&raquo;</a>';
-    }
-}
-
-
-
 // get results if nothing was searched yet
 if ($s == "all") {
     $hint="";
@@ -66,12 +49,14 @@ if ($s == "all") {
 } else if ($s == "search") {
     $q=$_GET["q"];
     $hint="";
+    $result_number = 0;
     while ($row = $results->fetchArray()) { 
-        $date       = $row['file_date'] ;
+        $date       = DateTime::createFromFormat('Ymd', $row['file_date'])->format('d.m.Y');
         $artist     = $row['artist'];
         $title      = $row['title'];
         $file       = $row['file_name'];
         if (stristr($date, $q) or stristr($artist, $q) or stristr($title, $q) ) {
+            $result_number = $result_number + 1;
             $hint = $hint . "<tr>".
                                 "<td><a class='button' href='public/mp3/".$file."' download><i class='fas fa-download'></i></a></td>".
                                 "<td>".$date."</td>".
@@ -88,11 +73,27 @@ if ($s == "all") {
     $hint = "error"; //ToDo: Translate
 }
 
+$pagination = "";
+$number_of_pages = ceil($result_number / $limit);
+if ($number_of_pages > 1){
+    $pagination = $pagination . '<button onclick="paginate(1)">&laquo;</button>';
+    if ($pageno > 1) {
+        $pagination = $pagination . '<button onclick="paginate(' . ($pageno - 1) . ')">' . ($pageno - 1) . '</button>';
+    }
+    $pagination = $pagination . '<button class="button-primary">'. $pageno .'</button>';
+    if ($pageno < $number_of_pages) {
+        $pagination = $pagination . '<button onclick="paginate(' . ($pageno + 1) . ')">' . ($pageno + 1) . '</button>';
+    }
+    $pagination = $pagination . '<button onclick="paginate(' . $number_of_pages . ')">&raquo;</button>';
+}
+
 
 if ($hint=="error") {
     echo("Something messed up!");
 } else {
-    echo('<table class="u-full-width">
+    echo('<table class="u-full-width">');
+    echo('<p>' . $result_number . ' Ergebnisse</p>');
+    echo('
     <thead>
         <tr>
             <th>Download</th><th>Date</th><th>Artist</th><th>Title</th>
@@ -103,9 +104,10 @@ if ($hint=="error") {
     echo('</tbody>
 </table>
 <div class="row">
-    <div class="pagination">');
-    echo($pagination);
-    echo('</div>
+    <div class="u-full-width">');
+        echo($pagination);
+        echo('
+    </div>
 </div>');
 }
 ?>
