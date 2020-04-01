@@ -33,6 +33,8 @@
 
   <!-- Script for entries
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script src="public/js/jquery.min.js"></script>
+
   <script>
       var page = 1;
 
@@ -53,7 +55,12 @@
         }
         xmlhttp.onreadystatechange=function() {
             if (this.readyState==4 && this.status==200) {
-            document.getElementById("livesearch").innerHTML=this.responseText;
+                var results = JSON.parse(this.responseText);
+                
+                $("#Pagination").empty();
+                $("#DataTable").empty();
+                buildHtmlTable(results["results"]);
+                buildPagination(results["numberOfPages"]);
             }
         }
         if (searchterm.length==0) {
@@ -63,6 +70,65 @@
         }
         xmlhttp.send();
     }
+
+    function buildHtmlTable(myList) {
+        var columns = addAllColumnHeaders(myList);
+    
+        for (var i = 0 ; i < myList.length ; i++) {
+            var row$ = $('<tr/>');
+            for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+
+                if (columns[colIndex] == "filename") {
+                    var cellValue = '<a class="button" href="public/mp3/' + myList[i][columns[colIndex]] + '"download><i class="fas fa-download"></i></a>';
+                } else {
+                    var cellValue = myList[i][columns[colIndex]];
+                }
+                
+
+                if (cellValue == null) { cellValue = ""; }
+    
+                row$.append($('<td/>').html(cellValue));
+            }
+            $("#DataTable").append(row$);
+        }
+    }
+    
+    // Adds a header row to the table and returns the set of columns.
+    // Need to do union of keys from all records as some records may not contain
+    // all records
+    function addAllColumnHeaders(myList)
+    {
+        var columnSet = [];
+        var headerTr$ = $('<tr/>');
+    
+        for (var i = 0 ; i < myList.length ; i++) {
+            var rowHash = myList[i];
+            for (var key in rowHash) {
+                if ($.inArray(key, columnSet) == -1){
+                    columnSet.push(key);
+                    headerTr$.append($('<th/>').html(key));
+                }
+            }
+        }
+        // $("#DataTable").append(headerTr$);
+    
+        return columnSet;
+    }
+
+    function buildPagination(numberOfPages){
+        if (numberOfPages > 1) {
+            $("#Pagination").append('<button onclick="paginate(1)">&laquo;</button>');
+            if (page > 1) {
+                $("#Pagination").append('<button onclick="paginate(' + (page - 1) + ')">' + (page - 1) + '</button>');
+            }
+            $("#Pagination").append('<button class="button-primary">' + page + '</button>');
+            if (page < numberOfPages) {
+                $("#Pagination").append('<button onclick="paginate(' + (page + 1) + ')">' + (page + 1) + '</button>');
+            }
+            $("#Pagination").append('<button onclick="paginate(' + numberOfPages + ')">&raquo;</button>');
+        }
+    }
+    
     </script>
 
 </head>
@@ -95,6 +161,21 @@
     <!-- Search results
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <div class="container" id="livesearch">
+        <table class="u-full-width">
+            <thead>
+                <tr>
+                    <th>Download</th><th>Date</th><th>Artist</th><th>Title</th>
+                </tr>
+            </thead>
+            <tbody id="DataTable">
+
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="u-full-width" id="Pagination">
+
+            </div>
+        </div>
     </div>
 </body>
 </html>

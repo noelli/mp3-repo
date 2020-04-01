@@ -33,17 +33,23 @@ $result_number = $db->querySingle("SELECT count(*) from $mp3_table");
 // get results if nothing was searched yet
 if ($s == "all") {
     $hint="";
+    $index = 0;
     while ($row = $results->fetchArray()) {
+        $index = $index + 1;
         $date       = DateTime::createFromFormat('Ymd', $row['file_date'])->format('d.m.Y');
         $artist     = $row['artist'];   
         $title      = $row['title'];
         $file       = $row['file_name'];
-        $hint = $hint . "<tr>".
-                            "<td><a class='button' href='public/mp3/".$file."' download><i class='fas fa-download'></i></a></td>".
-                            "<td>".$date."</td>".
-                            "<td>".$artist."</td>".
-                            "<td>".$title."</td>".
-                        "</tr>";
+        if ($index > 1) {
+            $hint = $hint . ","; 
+        }
+        $hint = $hint . '{"filename": "' . $file . '", "date": "' . $date . '", "artist": "' . $artist . '", "title": "' . $title . '"}';
+        // $hint = $hint . "<tr>".
+        //                     "<td><a class='button' href='public/mp3/".$file."' download><i class='fas fa-download'></i></a></td>".
+        //                     "<td>".$date."</td>".
+        //                     "<td>".$artist."</td>".
+        //                     "<td>".$title."</td>".
+        //                 "</tr>";
     }
     // get results of search term
 } else if ($s == "search") {
@@ -57,12 +63,16 @@ if ($s == "all") {
         $file       = $row['file_name'];
         if (stristr($date, $q) or stristr($artist, $q) or stristr($title, $q) ) {
             $result_number = $result_number + 1;
-            $hint = $hint . "<tr>".
-                                "<td><a class='button' href='public/mp3/".$file."' download><i class='fas fa-download'></i></a></td>".
-                                "<td>".$date."</td>".
-                                "<td>".$artist."</td>".
-                                "<td>".$title."</td>".
-                            "</tr>";
+            if ($result_number > 1) {
+                $hint = $hint . ","; 
+            }
+            $hint = $hint . '{"filename": "' . $file . '", "date": "' . $date . '", "artist": "' . $artist . '", "title": "' . $title . '"}';
+            // $hint = $hint . "<tr>".
+            //                     "<td><a class='button' href='public/mp3/".$file."' download><i class='fas fa-download'></i></a></td>".
+            //                     "<td>".$date."</td>".
+            //                     "<td>".$artist."</td>".
+            //                     "<td>".$title."</td>".
+            //                 "</tr>";
         }
     }
     // ToDo: Implement filters for certain timespans etc.
@@ -75,39 +85,44 @@ if ($s == "all") {
 
 $pagination = "";
 $number_of_pages = ceil($result_number / $limit);
-if ($number_of_pages > 1){
-    $pagination = $pagination . '<button onclick="paginate(1)">&laquo;</button>';
-    if ($pageno > 1) {
-        $pagination = $pagination . '<button onclick="paginate(' . ($pageno - 1) . ')">' . ($pageno - 1) . '</button>';
-    }
-    $pagination = $pagination . '<button class="button-primary">'. $pageno .'</button>';
-    if ($pageno < $number_of_pages) {
-        $pagination = $pagination . '<button onclick="paginate(' . ($pageno + 1) . ')">' . ($pageno + 1) . '</button>';
-    }
-    $pagination = $pagination . '<button onclick="paginate(' . $number_of_pages . ')">&raquo;</button>';
-}
+// if ($number_of_pages > 1){
+//     $pagination = $pagination . '<button onclick="paginate(1)">&laquo;</button>';
+//     if ($pageno > 1) {
+//         $pagination = $pagination . '<button onclick="paginate(' . ($pageno - 1) . ')">' . ($pageno - 1) . '</button>';
+//     }
+//     $pagination = $pagination . '<button class="button-primary">'. $pageno .'</button>';
+//     if ($pageno < $number_of_pages) {
+//         $pagination = $pagination . '<button onclick="paginate(' . ($pageno + 1) . ')">' . ($pageno + 1) . '</button>';
+//     }
+//     $pagination = $pagination . '<button onclick="paginate(' . $number_of_pages . ')">&raquo;</button>';
+// }
 
 
 if ($hint=="error") {
     echo("Something messed up!");
 } else {
-    echo('<table class="u-full-width">');
-    echo('<p>' . $result_number . ' Ergebnisse</p>');
-    echo('
-    <thead>
-        <tr>
-            <th>Download</th><th>Date</th><th>Artist</th><th>Title</th>
-        </tr>
-    </thead>
-    <tbody>');
-    echo($hint);
-    echo('</tbody>
-</table>
-<div class="row">
-    <div class="u-full-width">');
-        echo($pagination);
-        echo('
-    </div>
-</div>');
+//     echo('<table class="u-full-width">');
+//     echo('<p>' . $result_number . ' Ergebnisse</p>');
+//     echo('
+//     <thead>
+//         <tr>
+//             <th>Download</th><th>Date</th><th>Artist</th><th>Title</th>
+//         </tr>
+//     </thead>
+//     <tbody>');
+//     echo($hint);
+//     echo('</tbody>
+// </table>
+// <div class="row">
+//     <div class="u-full-width">');
+//         echo($pagination);
+//         echo('
+//     </div>
+// </div>');
+
+    echo('{');
+    echo('"numberOfPages": ' . $number_of_pages . ',');
+    echo('"results": [' . $hint . ']');
+    echo('}');
 }
 ?>
